@@ -9,6 +9,7 @@ import {
   Typography,
   Link,
 } from "@material-ui/core";
+import axios from "axios";
 const Login = () => {
   const paperStyle = {
     padding: "30px 20px",
@@ -20,6 +21,23 @@ const Login = () => {
     margin: "8px",
   };
   const [show, setShow] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+
+  let sendData = () => {
+    axios
+      .post("https://todo-application-2.herokuapp.com/loginPerson", {
+        email: emailInput,
+        password: passwordInput,
+      })
+      .then((res) => {
+        if (typeof res.data === "object") {
+          window.location = "/home";
+        } else {
+          window.location = "/";
+        }
+      });
+  };
   return (
     <div>
       <Grid>
@@ -29,11 +47,17 @@ const Login = () => {
             <Typography>Log in your account!</Typography>
           </Grid>
           <form>
-            <TextField fullWidth label="Email" required></TextField>
+            <TextField
+              fullWidth
+              onChange={(e) => setEmailInput(e.target.value)}
+              label="Email"
+              required
+            ></TextField>
             <TextField
               fullWidth
               label="Password"
               required
+              onChange={(e) => setPasswordInput(e.target.value)}
               type={show ? "text" : "password"}
             ></TextField>
             <FormControlLabel
@@ -42,11 +66,12 @@ const Login = () => {
               onClick={() => setShow(!show)}
             ></FormControlLabel>
             <Button
-              type="submit"
+              type="button"
               variant="contained"
               style={btnStyle}
               fullWidth
               color="primary"
+              onClick={() => sendData()}
             >
               Log In
             </Button>
