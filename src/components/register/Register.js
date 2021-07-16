@@ -1,20 +1,12 @@
 import React, { useState } from "react";
-import { Grid, Paper, Typography, TextField } from "@material-ui/core";
+import { Grid, Typography, TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import axios from "axios";
+import { PaperStyle } from "./Register.style";
 
 const Register = () => {
-  const paperStyle = {
-    padding: "30px 20px",
-    width: "300px",
-    margin: "20px auto",
-    backgroundColor: "darkorange",
-  };
-  const btnStyle = {
-    margin: "8px",
-  };
   const [show, setShow] = useState(false);
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
@@ -41,7 +33,7 @@ const Register = () => {
 
   return (
     <Grid>
-      <Paper elevation={20} style={paperStyle}>
+      <PaperStyle>
         <Grid align="center">
           <h2>Register</h2>
           <Typography>Create an account!</Typography>
@@ -85,7 +77,6 @@ const Register = () => {
           <Button
             type="button"
             variant="contained"
-            style={btnStyle}
             fullWidth
             color="primary"
             onClick={() => sendData()}
@@ -93,7 +84,7 @@ const Register = () => {
             Register
           </Button>
         </form>
-      </Paper>
+      </PaperStyle>
     </Grid>
   );
 };

@@ -3,23 +3,14 @@ import {
   Button,
   FormControlLabel,
   Grid,
-  Paper,
   Switch,
   TextField,
   Typography,
   Link,
 } from "@material-ui/core";
 import axios from "axios";
+import { PaperStyle } from "./Login.style";
 const Login = () => {
-  const paperStyle = {
-    padding: "30px 20px",
-    width: "300px",
-    margin: "20px auto",
-    backgroundColor: "darkorange",
-  };
-  const btnStyle = {
-    margin: "8px",
-  };
   const [show, setShow] = useState(false);
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -31,7 +22,9 @@ const Login = () => {
         password: passwordInput,
       })
       .then((res) => {
+        console.log(res);
         if (typeof res.data === "object") {
+          window.localStorage.setItem("userId", res.data.id);
           window.location = "/home";
         } else {
           window.location = "/";
@@ -41,7 +34,7 @@ const Login = () => {
   return (
     <div>
       <Grid>
-        <Paper elevation={20} style={paperStyle}>
+        <PaperStyle>
           <Grid align="center">
             <h2>Sign In</h2>
             <Typography>Log in your account!</Typography>
@@ -68,7 +61,6 @@ const Login = () => {
             <Button
               type="button"
               variant="contained"
-              style={btnStyle}
               fullWidth
               color="primary"
               onClick={() => sendData()}
@@ -80,7 +72,7 @@ const Login = () => {
               <Link href="/register">Sign Up</Link>
             </Typography>
           </form>
-        </Paper>
+        </PaperStyle>
       </Grid>
     </div>
   );
