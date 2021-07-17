@@ -6,3 +6,15 @@ export const PaperStyle = styled.div`
   margin: 20px auto;
   background-color: darkorange;
 `;
+
+export const GridStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+export const ButtonCheckStyle = styled.button`
+  background-color: lightgreen;
+  font-size: large;
+  cursor: pointer;
+  height: auto;
+`;

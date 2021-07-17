@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Paper, Typography } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { PaperStyle } from "./Home.style";
+import { PaperStyle, GridStyle } from "./Home.style";
 
 function Home() {
   const [task, setTask] = useState("");
@@ -23,7 +23,6 @@ function Home() {
         console.log(res);
         setTodos([...todos, res.data.name]);
         setTask("");
-        console.log(todos);
       });
   };
 
@@ -54,11 +53,21 @@ function Home() {
           </Grid>
           <Paper>
             <Grid align="center">
-              {/* <ul>
-                {todos.map((t) => {
-                  return <li>{t.value}</li>;
-                })}
-              </ul> */}
+              {todos.map((t, key) => {
+                return (
+                  <GridStyle key={key}>
+                    <Grid>{t}</Grid>
+                    <Grid>
+                      <Button type="button" color="default" variant="contained">
+                        ✅
+                      </Button>
+                      <Button type="button" color="default" variant="contained">
+                        🗑
+                      </Button>
+                    </Grid>
+                  </GridStyle>
+                );
+              })}
             </Grid>
           </Paper>
         </PaperStyle>
