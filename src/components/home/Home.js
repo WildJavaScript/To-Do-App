@@ -6,26 +6,67 @@ import { PaperStyle, GridStyle } from "./Home.style";
 function Home() {
   const [task, setTask] = useState("");
   const [todos, setTodos] = useState([]);
-  //   const [isDone, setIsDone] = useState(false);
+  // const [todosId, setTodosId] = useState([]);
+  // const [isDone, setIsDone] = useState(false);
   useEffect(() => {
     axios
       .get("https://todo-application-2.herokuapp.com/people")
       .then((res) => console.log(res.data));
-  }, []);
-  let sendTodo = () => {
     axios
-      .post("https://todo-application-2.herokuapp.com/action", {
-        name: task,
-        isDone: false,
+      .post("https://todo-application-2.herokuapp.com/actionsOfUser", {
         personId: window.localStorage.getItem("userId"),
       })
       .then((res) => {
-        console.log(res);
-        setTodos([...todos, res.data.name]);
-        setTask("");
+        console.log(res.data);
       });
-  };
+  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .post("https://todo-application-2.herokuapp.com/actionsOfUser", {
+  //       personId: window.localStorage.getItem("userId"),
+  //     })
+  //     .then((res) => {
+  //       for (let i = 0; i < res.data.length; ++i) {
+  //         setTodosId([...todosId, res.data[i].id]);
+  //       }
+  //     });
+  // }, [todosId]);
 
+  let sendTodo = () => {
+    if (task !== "") {
+      axios
+        .post("https://todo-application-2.herokuapp.com/action", {
+          name: task,
+          isDone: false,
+          personId: window.localStorage.getItem("userId"),
+        })
+        .then((res) => {
+          console.log(res);
+          setTodos([...todos, res.data.name]);
+          setTask("");
+        });
+    }
+  };
+  let taskCheck = () => {
+    axios
+      .put("https://todo-application-2.herokuapp.com/action", {
+        id: window.localStorage.getItem("taskId"),
+        isDone: true,
+      })
+      .then((res) => console.log(res));
+  };
+  // useEffect(() => {
+  //   setTodosId([...todosId, ])
+  // }, [todosId]);
+  // let taskDelete = () => {
+  //   axios
+  //     .delete("https://todo-application-2.herokuapp.com/action", {
+  //       id: window.localStorage.getItem("taskId"),
+  //     })
+  //     .then((res) => {
+  //       console.log(typeof res);
+  //     });
+  // };
   return (
     <div>
       <Grid>
@@ -58,10 +99,20 @@ function Home() {
                   <GridStyle key={key}>
                     <Grid>{t}</Grid>
                     <Grid>
-                      <Button type="button" color="default" variant="contained">
+                      <Button
+                        type="button"
+                        color="default"
+                        variant="contained"
+                        onClick={() => taskCheck()}
+                      >
                         ✅
                       </Button>
-                      <Button type="button" color="default" variant="contained">
+                      <Button
+                        type="button"
+                        color="default"
+                        variant="contained"
+                        // onClick={() => taskDelete()}
+                      >
                         🗑
                       </Button>
                     </Grid>
