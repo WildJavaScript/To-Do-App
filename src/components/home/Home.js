@@ -6,8 +6,6 @@ import { PaperStyle, GridStyle } from "./Home.style";
 function Home() {
   const [task, setTask] = useState("");
   const [todos, setTodos] = useState([]);
-  // const [todosId, setTodosId] = useState([]);
-  // const [isDone, setIsDone] = useState(false);
   useEffect(() => {
     axios
       .get("https://todo-application-2.herokuapp.com/people")
@@ -20,17 +18,6 @@ function Home() {
         console.log(res.data);
       });
   }, []);
-  // useEffect(() => {
-  //   axios
-  //     .post("https://todo-application-2.herokuapp.com/actionsOfUser", {
-  //       personId: window.localStorage.getItem("userId"),
-  //     })
-  //     .then((res) => {
-  //       for (let i = 0; i < res.data.length; ++i) {
-  //         setTodosId([...todosId, res.data[i].id]);
-  //       }
-  //     });
-  // }, [todosId]);
 
   let sendTodo = () => {
     if (task !== "") {
@@ -47,26 +34,23 @@ function Home() {
         });
     }
   };
-  let taskCheck = () => {
+  let taskCheck = (id, isDone) => {
     axios
       .put("https://todo-application-2.herokuapp.com/action", {
-        id: window.localStorage.getItem("taskId"),
-        isDone: true,
+        id,
+        isDone: !isDone,
       })
       .then((res) => console.log(res));
   };
-  // useEffect(() => {
-  //   setTodosId([...todosId, ])
-  // }, [todosId]);
-  // let taskDelete = () => {
-  //   axios
-  //     .delete("https://todo-application-2.herokuapp.com/action", {
-  //       id: window.localStorage.getItem("taskId"),
-  //     })
-  //     .then((res) => {
-  //       console.log(typeof res);
-  //     });
-  // };
+  let taskDelete = (id) => {
+    axios
+      .delete("https://todo-application-2.herokuapp.com/action", {
+        id,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
   return (
     <div>
       <Grid>
@@ -103,7 +87,7 @@ function Home() {
                         type="button"
                         color="default"
                         variant="contained"
-                        onClick={() => taskCheck()}
+                        onClick={() => taskCheck(t.id, t.isDone)}
                       >
                         ✅
                       </Button>
@@ -111,7 +95,7 @@ function Home() {
                         type="button"
                         color="default"
                         variant="contained"
-                        // onClick={() => taskDelete()}
+                        onClick={() => taskDelete(t.id)}
                       >
                         🗑
                       </Button>
