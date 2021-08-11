@@ -1,0 +1,10 @@
+.checked {
+  color: green;
+  text-decoration: line-through;
+  font-weight: bold;
+}
+
+.unchecked {
+  color: black;
+  font-weight: bold;
+}

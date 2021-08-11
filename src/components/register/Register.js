@@ -5,6 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import axios from "axios";
 import { PaperStyle } from "./Register.style";
+// import validator from "validator";
 
 const Register = () => {
   const [show, setShow] = useState(false);
@@ -13,7 +14,12 @@ const Register = () => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
 
+  // let validateAndSetEmail = (e) => {
+  //   validator.isEmail(e.target.value);
+  //   setEmailInput(e.target.value);
+  // };
   let sendData = () => {
+    // validator.isEmail(emailInput)
     axios
       .post("https://todo-application-2.herokuapp.com/registerPerson", {
         firstName: firstNameInput,
@@ -55,6 +61,7 @@ const Register = () => {
             fullWidth
             label="Email"
             required
+            // onChange={(e) => validateAndSetEmail(e.target.value)}
             onChange={(e) => setEmailInput(e.target.value)}
           ></TextField>
           <TextField fullWidth label="Username" required></TextField>

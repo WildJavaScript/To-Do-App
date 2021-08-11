@@ -2,6 +2,7 @@ import { Button, Grid, TextField, Paper, Typography } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { PaperStyle, GridStyle } from "./Home.style";
+import "./Home.css";
 
 function Home() {
   const [task, setTask] = useState("");
@@ -16,6 +17,9 @@ function Home() {
       })
       .then((res) => {
         console.log(res.data);
+        if (res.data.length > 0) {
+          setTodos(res.data);
+        }
       });
   }, []);
 
@@ -24,12 +28,12 @@ function Home() {
       axios
         .post("https://todo-application-2.herokuapp.com/action", {
           name: task,
-          isDone: false,
+          isDone: 0,
           personId: window.localStorage.getItem("userId"),
         })
         .then((res) => {
           console.log(res);
-          setTodos([...todos, res.data.name]);
+          setTodos([...todos, res.data]);
           setTask("");
         });
     }
@@ -40,15 +44,36 @@ function Home() {
         id,
         isDone: !isDone,
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        setTodos(
+          todos.map((todo) =>
+            todo.id === id ? { ...todo, isDone: !isDone } : todo
+          )
+        );
+        // let newTodos = JSON.parse(JSON.stringify(todos));
+        // for (let i = 0; i < newTodos.length; ++i) {
+        //   if (newTodos[i].id === id) {
+        //     newTodos[i].isDone = !newTodos[i].isDone;
+        //   }
+        // }
+        // setTodos(newTodos);
+      });
   };
   let taskDelete = (id) => {
     axios
       .delete("https://todo-application-2.herokuapp.com/action", {
-        id,
+        data: {
+          id,
+        },
       })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setTodos(
+          todos.filter((x) => {
+            return x.id !== id;
+          })
+        );
       });
   };
   return (
@@ -59,9 +84,10 @@ function Home() {
             <h2>What are your plans?</h2>
             <Typography>Manage yor everyday plans</Typography>
           </Grid>
+
           <Grid align="center">
             <TextField
-              label="Create a new tast"
+              label="Create a new task"
               fullWidth
               value={task}
               onChange={(e) => setTask(e.target.value)}
@@ -81,7 +107,9 @@ function Home() {
               {todos.map((t, key) => {
                 return (
                   <GridStyle key={key}>
-                    <Grid>{t}</Grid>
+                    <Grid className={t.isDone ? "checked" : "unchecked"}>
+                      {t.name}
+                    </Grid>
                     <Grid>
                       <Button
                         type="button"
